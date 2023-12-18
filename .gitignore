@@ -1,6 +1,11 @@
 # Compiled class file
 *.class
 
+# Mac
+.DS_Store
+/.DS_Store
+/.gitignore
+
 # Log file
 *.log
 
