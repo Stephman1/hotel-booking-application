@@ -2,6 +2,7 @@ package shoppingcart;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Inventory {
 	
@@ -11,7 +12,7 @@ public class Inventory {
 	
 	// Constructor
 	private Inventory() {
-		items = new HashMap<String,ArrayList<Product>>();
+		this.items = new HashMap<String,ArrayList<Product>>();
 		this.items.put("Candy Cane", new ArrayList<Product>());
 		this.items.put("Christmas Tree", new ArrayList<Product>());
 		this.items.put("Star", new ArrayList<Product>());
@@ -35,8 +36,14 @@ public class Inventory {
     			addItem("Star", new Star((long) 8.0));
     		}
     	}
-    	
     }
+    
+    public void getItems() {
+    	System.out.println("Items in the store:");
+		for (String name: items.keySet()) {
+			System.out.println(name + ", quantity=" + items.get(name).size());
+		}
+	}
     
     public void addItem(String name, Product newItem) {
     	items.get(name).add(newItem);
@@ -44,6 +51,7 @@ public class Inventory {
     
     public ArrayList<Product> removeItem(String name, int quantity) {
     	ArrayList<Product> products = new ArrayList<Product>();
+    	System.out.println("|" + name + "|");
     	if (checkAvailability(name, quantity)) {
     		ArrayList<Product> productHolder = items.get(name);
     		for (int i=0; i < quantity; i++) {
@@ -58,8 +66,14 @@ public class Inventory {
     }
     
     public boolean checkAvailability(String name, int quantity) {
-    	if (items.get(name).size() >= quantity) return true;
-    	else return false;
+    	System.out.println("|" + name + "|");
+    	for (Map.Entry<String, ArrayList<Product>> entry: items.entrySet()) {
+    		System.out.println(entry.getKey() + " : " + entry.getValue().size() + " : " + entry.getValue());
+    	}
+    	//System.out.println(items.get(name));
+    	//if (items.get(name).size() >= quantity) return true;
+    	//else return false;
+    	return true;
     }
     
 }
