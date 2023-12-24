@@ -5,6 +5,7 @@ public class Vehicle {
 	// Fields
 	private String regNo;
 	private boolean isParked;
+	private Integer parkingSpaceNum;
 	private String type;
 	
 	// Constructor
@@ -28,6 +29,14 @@ public class Vehicle {
 	
 	public String getVehicleType() {
 		return type;
+	}
+	
+	public Integer getParkingSpaceNum() {
+		return parkingSpaceNum;
+	}
+	
+	public void setParkingSpaceNo(Integer num) {
+		parkingSpaceNum = num;
 	}
 	
 }

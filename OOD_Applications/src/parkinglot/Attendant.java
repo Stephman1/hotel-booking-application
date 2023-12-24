@@ -4,16 +4,10 @@ public class Attendant {
 	
 	// Methods
 	public boolean giveParkingSpace(Vehicle vehicle, ParkingLot parkingLot) {
-		if (parkingLot.getIsFreeSpace()) {
-			parkingLot.parkVehicle(vehicle);
-			return true;
-		}
-		else {
-			return false;
-		}
+		return parkingLot.parkVehicle(vehicle);
 	}
 	
-	public boolean vehicleExit(String regNo, ParkingLot parkingLot) {
+	public boolean retrieveVehicle(String regNo, ParkingLot parkingLot) {
 		return parkingLot.removeVehicle(regNo);
 	}
 

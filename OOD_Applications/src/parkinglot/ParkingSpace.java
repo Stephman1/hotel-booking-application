@@ -5,11 +5,13 @@ public class ParkingSpace {
 	// Fields
 	private String spaceType;
 	private boolean isFree = true;
-	private Vehicle vehicle = null;
+	private Vehicle vehicle;
+	private Integer parkingSpaceNum;
 	
 	// Constructor
-	public ParkingSpace(String type) {
+	public ParkingSpace(String type, Integer parkingSpaceNum) {
 		this.spaceType = type;
+		this.parkingSpaceNum = parkingSpaceNum;
 	}
 	
 	// Methods
@@ -17,15 +19,24 @@ public class ParkingSpace {
 		return isFree;
 	}
 	
-	public boolean parkCar(Vehicle vehicle) {
+	public void setIsFree(boolean free) {
+		isFree = free;
+	}
+	
+	public boolean parkVehicle(Vehicle vehicle, Integer parkingSpaceNum) {
 		if (checkIsFree()) {
 			this.vehicle = vehicle;
-			isFree = false;
+			setIsFree(false);
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+	
+	public void removeVehicle() {
+		setIsFree(true);
+		this.vehicle = null;
 	}
 	
 	public String getSpaceType() {
@@ -39,6 +50,10 @@ public class ParkingSpace {
 		else {
 			return vehicle.getRegNo();
 		}
+	}
+	
+	public Integer getParkingSpaceNum() {
+		return parkingSpaceNum;
 	}
 	
 }
