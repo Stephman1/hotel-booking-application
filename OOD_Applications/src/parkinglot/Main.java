@@ -36,9 +36,9 @@ public class Main {
 				}
 			}
 			else if (parkRemove.equalsIgnoreCase("remove")) {
-				long payment = parkingAttendant.retrieveVehicle(regNum, parkingLot);
+				double payment = parkingAttendant.retrieveVehicle(regNum, parkingLot);
 				if (payment != -1) {
-					System.out.println("Please pay the attendant £" + payment);
+					System.out.printf("Please pay the attendant £%.2f\n",payment);
 					System.out.println("Thank you for using our parking lot.");
 				}
 				else {

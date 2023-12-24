@@ -1,5 +1,6 @@
 package parkinglot;
 
+
 public class Attendant {
 	
 	// Methods
@@ -7,25 +8,29 @@ public class Attendant {
 		return parkingLot.parkVehicle(vehicle);
 	}
 	
-	public long retrieveVehicle(String regNo, ParkingLot parkingLot) {
-		long parkingTime = parkingLot.removeVehicle(regNo);
+	public double retrieveVehicle(String regNum, ParkingLot parkingLot) {
+		String type = parkingLot.getVehicleType(regNum);
+		long parkingTime = parkingLot.removeVehicle(regNum);
 		if (parkingTime > 0) {
-			String type = parkingLot.getVehicleType(regNo);
 			return calculatePayment(parkingTime, type);
 		}
 		return -1;
 	}
 	
-	private long calculatePayment(long time, String vehicleType) {
+	private double calculatePayment(long time, String vehicleType) {
 		// Every minute costs 50p to park if a car and 30p if a bike with a £1 entry charge.
-		long payment = (time / 1000) / 60;
+		int minutes = (int) (time / (1000 * 60));
+		System.out.println("Your vehicle has been parked for " + minutes + " minutes.");
+		double payment = 1.0;
+		double minutesCharged;
 		if (vehicleType.equals("car")) {
-			payment *= 0.5;
+			minutesCharged = minutes * 0.50;
+			payment += minutesCharged;
 		}
 		else if (vehicleType.equals("bike")) {
-			payment *= 0.3;
+			minutesCharged = minutes * 0.30;
+			payment += minutesCharged;
 		}
-		payment += 1;
 		return payment;
 	}
 
