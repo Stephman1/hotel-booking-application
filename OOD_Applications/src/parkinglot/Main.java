@@ -14,6 +14,10 @@ public class Main {
 			System.out.print("> ");
 			System.out.flush();
 			String parkRemove = scanner.nextLine();
+			if (parkRemove.equalsIgnoreCase("end program")) {
+				scanner.close();
+				return;
+			}
 			System.out.println("Please enter your vehicle registration number");
 			System.out.print("> ");
 			System.out.flush();
@@ -32,16 +36,14 @@ public class Main {
 				}
 			}
 			else if (parkRemove.equalsIgnoreCase("remove")) {
-				if (parkingAttendant.retrieveVehicle(regNum, parkingLot)) {
+				long payment = parkingAttendant.retrieveVehicle(regNum, parkingLot);
+				if (payment != -1) {
+					System.out.println("Please pay the attendant £" + payment);
 					System.out.println("Thank you for using our parking lot.");
 				}
 				else {
 					System.out.println("This registration number does not match a vehicle in the parking lot.");
 				}
-			}
-			else if (parkRemove.equalsIgnoreCase("end program")) {
-				scanner.close();
-				return;
 			}
 		}
 	}

@@ -7,6 +7,7 @@ public class ParkingSpace {
 	private boolean isFree = true;
 	private Vehicle vehicle;
 	private Integer parkingSpaceNum;
+	private long timeOccupied;
 	
 	// Constructor
 	public ParkingSpace(String type, Integer parkingSpaceNum) {
@@ -26,6 +27,7 @@ public class ParkingSpace {
 	public boolean parkVehicle(Vehicle vehicle, Integer parkingSpaceNum) {
 		if (checkIsFree()) {
 			this.vehicle = vehicle;
+			setTimeOccupied();
 			setIsFree(false);
 			return true;
 		}
@@ -34,9 +36,10 @@ public class ParkingSpace {
 		}
 	}
 	
-	public void removeVehicle() {
+	public long removeVehicle() {
 		setIsFree(true);
 		this.vehicle = null;
+		return (System.currentTimeMillis() - timeOccupied);
 	}
 	
 	public String getSpaceType() {
@@ -54,6 +57,14 @@ public class ParkingSpace {
 	
 	public Integer getParkingSpaceNum() {
 		return parkingSpaceNum;
+	}
+	
+	public long getTimeOccupied() {
+		return timeOccupied;
+	}
+	
+	public void setTimeOccupied() {
+		timeOccupied = System.currentTimeMillis();
 	}
 	
 }

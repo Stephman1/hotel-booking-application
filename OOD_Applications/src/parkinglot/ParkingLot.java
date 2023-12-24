@@ -40,16 +40,26 @@ public class ParkingLot {
 		}
 	}
 	
-	public boolean removeVehicle(String regNum) {
+	public long removeVehicle(String regNum) {
 		for (ParkingSpace space: parkingSpaces) {
 			String vehicleNum = space.getVehicleRegNo();
 			if (vehicleNum == null) continue;
 			else if (vehicleNum.equals(regNum)) {
-				space.removeVehicle();
-				return true;
+				return space.removeVehicle();
 			}
 		}
-		return false;
+		return -1;
+	}
+	
+	public String getVehicleType(String regNum) {
+		for (ParkingSpace space: parkingSpaces) {
+			String vehicleNum = space.getVehicleRegNo();
+			if (vehicleNum == null) continue;
+			else if (vehicleNum.equals(regNum)) {
+				return space.getSpaceType();
+			}
+		}
+		return null;
 	}
 	
 }
