@@ -9,6 +9,11 @@ public class Main {
 		Attendant parkingAttendant = new Attendant();
 		Scanner scanner = new Scanner(System.in);
 		
+		Main parkingLotApp = new Main();
+		parkingLotApp.start(parkingLot, parkingAttendant, scanner);
+	}
+	
+	public void start(ParkingLot parkingLot, Attendant parkingAttendant, Scanner scanner) {
 		while (true) {
 			System.out.println("Would you like to park or remove your vehicle");
 			System.out.print("> ");
@@ -47,4 +52,5 @@ public class Main {
 			}
 		}
 	}
+	
 }
