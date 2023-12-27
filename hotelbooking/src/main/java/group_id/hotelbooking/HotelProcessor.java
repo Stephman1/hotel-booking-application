@@ -8,13 +8,16 @@ public class HotelProcessor {
     private static final String PASSWORD = "password";
 
     public static void printAvailableRoomNumbers() {
-        String query = "SELECT * FROM public.hotel_rooms WHERE hotel_rooms.is_occupied = false;";
+        String query = "SELECT * FROM public.hotel_rooms WHERE hotel_rooms.is_occupied = false ORDER BY hotel_rooms.hotel,hotel_rooms.room_number;";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()){
                 System.out.print("Room: " + rs.getInt("room_number") + "\t");
+                System.out.print("Hotel: " + rs.getString("hotel") + "\t");
+                System.out.print("Size: " + rs.getString("room_type") + "\t");
+                System.out.print("Price: £" + rs.getInt("price") + "\n");
             }
 
 
