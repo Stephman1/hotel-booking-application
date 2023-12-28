@@ -44,7 +44,6 @@ public class HotelProcessor {
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
         }
-
     }
 
     public static void setRoomtoUnoccupied(int roomNumber) {
@@ -64,6 +63,6 @@ public class HotelProcessor {
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
         }
-
     }
+    
 }

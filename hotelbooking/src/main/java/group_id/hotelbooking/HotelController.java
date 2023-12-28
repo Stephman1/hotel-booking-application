@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +25,7 @@ public class HotelController {
     	StringBuilder availableRooms = new StringBuilder();
     	String query = "SELECT * FROM public.hotel_rooms WHERE hotel_rooms.is_occupied = false ORDER BY hotel_rooms.hotel,hotel_rooms.room_number;";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()){
@@ -34,8 +36,54 @@ public class HotelController {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
+            return "SQL Error: " + e.getMessage();
         }
         return availableRooms.toString();
+    }
+    
+    @PutMapping("/occupied/{hotel}/{roomNumber}")
+    public String setRoomtoOccupied(
+    		@PathVariable String hotel,
+    		@PathVariable int roomNumber) {
+    	String query = "UPDATE hotel_rooms SET is_occupied = TRUE WHERE room_number = ? AND hotel = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, roomNumber);
+            pstmt.setString(2, hotel);
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                return "Room " + roomNumber + " has been set to occupied.";
+            } else {
+                return "Room " + roomNumber + " was not found or is already occupied.";
+            }
+
+        } catch (SQLException e) {
+            return "SQL Error: " + e.getMessage();
+        }
+    }
+    
+    @PutMapping("/unoccupied/{hotel}/{roomNumber}")
+    public String setRoomtoUnoccupied(
+    		@PathVariable String hotel,
+    		@PathVariable int roomNumber) {
+    	String query = "UPDATE hotel_rooms SET is_occupied = FALSE WHERE room_number = ? AND hotel = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, roomNumber);
+            pstmt.setString(2, hotel);
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                return "Room " + roomNumber + " has been set to unoccupied.";
+            } else {
+                return "Room " + roomNumber + " was not found or is already unoccupied.";
+            }
+
+        } catch (SQLException e) {
+            return "SQL Error: " + e.getMessage();
+        }
     }
 }
