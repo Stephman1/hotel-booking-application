@@ -19,8 +19,18 @@ import java.util.Optional;
 @RequestMapping("/hotel_rooms")
 public class HotelController {
 
+	private final HotelRoomRepository hotelRoomRepository;
+
+    // Constructor for normal usage
     @Autowired
-    private HotelRoomRepository hotelRoomRepository;
+    public HotelController(HotelRoomRepository hotelRoomRepository) {
+        this.hotelRoomRepository = hotelRoomRepository;
+    }
+
+    // Constructor for testing with a mock object
+    public HotelController(HotelRoomRepository hotelRoomRepository, boolean isTest) {
+        this.hotelRoomRepository = hotelRoomRepository;
+    }
 
     /**
     Example curl:
@@ -48,7 +58,7 @@ public class HotelController {
      curl -X GET "http://localhost:8080/hotel_rooms/available/small"
      */
     @GetMapping("/available/{roomType}")
-    public List<HotelRoom> getAvailableRoomNumbers(@PathVariable String roomType) {
+    public List<HotelRoom> getAvailableRoomsByRoomType(@PathVariable String roomType) {
         List<HotelRoom> rooms = hotelRoomRepository.findByRoomTypeAndIsOccupiedFalse(roomType);
         return new ArrayList<>(rooms);
     }

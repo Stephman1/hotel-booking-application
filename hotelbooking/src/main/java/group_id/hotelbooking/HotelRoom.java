@@ -1,5 +1,7 @@
 package group_id.hotelbooking;
 
+import java.util.Objects;
+
 import javax.persistence.*;
 
 @Entity
@@ -31,6 +33,15 @@ public class HotelRoom {
     	// Default constructor
     }
     
+    public HotelRoom(Integer roomNumber, Integer numOfPeople, Integer price, String roomType, String hotel) {
+    	this.roomNumber = roomNumber;
+    	this.numberOfPeople = numOfPeople;
+    	this.price = price;
+    	this.roomType = roomType;
+    	this.isOccupied = false;
+    	this.hotel = hotel;
+    }
+    
     // Methods
     @Override
     public String toString() {
@@ -43,6 +54,18 @@ public class HotelRoom {
                 ", isOccupied=" + isOccupied +
                 ", hotel='" + hotel + '\'' +
                 '}';
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        HotelRoom otherRoom = (HotelRoom) obj;
+        return Objects.equals(roomNumber, otherRoom.roomNumber) &&
+               Objects.equals(numberOfPeople, otherRoom.numberOfPeople) &&
+               Objects.equals(price, otherRoom.price) &&
+               Objects.equals(roomType, otherRoom.roomType) &&
+               Objects.equals(hotel, otherRoom.hotel);
     }
 
 	/**
