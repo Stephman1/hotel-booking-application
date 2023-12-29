@@ -1,14 +1,18 @@
 package group_id.hotelbooking;
 
+import static org.mockito.Mockito.*;
+
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 /**
- * Unit test for simple App.
+ * Unit test for hotel booking application.
  */
-public class AppTest 
+public class HotelBookingAppTest 
 {
+	// Mock database
+	
     /**
      * Rigorous Test :-)
      */
