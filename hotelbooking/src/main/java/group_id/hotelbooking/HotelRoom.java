@@ -1,18 +1,9 @@
 package group_id.hotelbooking;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "hotel_rooms")
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
 public class HotelRoom {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,13 +32,73 @@ public class HotelRoom {
     }
     
     // Methods
-    
-	public void setIsOccupied(Boolean occupied) {
-		isOccupied = occupied;
+    @Override
+    public String toString() {
+        return "HotelRoom{" +
+                "id=" + id +
+                ", roomNumber=" + roomNumber +
+                ", numberOfPeople=" + numberOfPeople +
+                ", price=" + price +
+                ", roomType='" + roomType + '\'' +
+                ", isOccupied=" + isOccupied +
+                ", hotel='" + hotel + '\'' +
+                '}';
+    }
+
+	/**
+	 * @return the price
+	 */
+	public Integer getPrice() {
+		return price;
 	}
-	
-	public void setPrice(Integer newPrice) {
-		price = newPrice;
+
+	/**
+	 * @param price the price to set
+	 */
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+
+	/**
+	 * @return the isOccupied
+	 */
+	public Boolean getIsOccupied() {
+		return isOccupied;
+	}
+
+	/**
+	 * @param isOccupied the isOccupied to set
+	 */
+	public void setIsOccupied(Boolean isOccupied) {
+		this.isOccupied = isOccupied;
+	}
+
+	/**
+	 * @return the roomNumber
+	 */
+	public Integer getRoomNumber() {
+		return roomNumber;
+	}
+
+	/**
+	 * @return the numberOfPeople
+	 */
+	public Integer getNumberOfPeople() {
+		return numberOfPeople;
+	}
+
+	/**
+	 * @return the roomType
+	 */
+	public String getRoomType() {
+		return roomType;
+	}
+
+	/**
+	 * @return the hotel
+	 */
+	public String getHotel() {
+		return hotel;
 	}
 
 }
