@@ -3,22 +3,27 @@ package group_id.hotelbooking;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.springframework.http.ResponseEntity;
 
 /**
- * Unit test for hotel booking application.
+ * Unit tests for hotel booking application.
  */
 public class HotelBookingAppTest 
 {
 	
 	// Mock database
 	@Test
-    public void testDatabaseInteractionAllAvailable() {
+    public void testGetAllRooms() {
 		HotelRoom room1 = new HotelRoom(101,4,180,"medium","Marriott");
 		HotelRoom room2 = new HotelRoom(103,2,120,"small","Hilton");
 		HotelRoom room3 = new HotelRoom(202,5,530,"large","Savoy");
@@ -46,7 +51,7 @@ public class HotelBookingAppTest
     }
 	
 	@Test
-    public void testDatabaseInteractionAllAvailableSize() {
+    public void testGetAvailableRoomsByRoomType() {
 		HotelRoom room1 = new HotelRoom(101,4,180,"medium","Marriott");
 		HotelRoom room2 = new HotelRoom(103,2,120,"small","Hilton");
 		HotelRoom room3 = new HotelRoom(202,5,530,"large","Savoy");
@@ -75,4 +80,29 @@ public class HotelBookingAppTest
         // Assert the result of the test
         assertEquals(smallRooms, result);
     }
+	
+	@Test
+    public void testUpdateRoomOccupiedStatus() {
+		Optional<HotelRoom> room = Optional.ofNullable(new HotelRoom(105,2,130,"small","Savoy"));
+		assertFalse(room.get().getIsOccupied());
+		
+        // Create a mock object for the DatabaseService interface
+        HotelRoomRepository mockDatabaseService = mock(HotelRoomRepository.class);
+
+        // Define the behaviour of the mock object
+        when(mockDatabaseService.findFirstByRoomNumberAndHotel(105,"Savoy")).thenReturn(room);
+
+        // Perform the test using the mock object
+        HotelController hotelController = new HotelController(mockDatabaseService, true);
+        Map<String,Boolean> occupiedStatus = new HashMap<>();
+        occupiedStatus.put("occupied", true);
+        ResponseEntity<String> result = hotelController.updateRoomOccupiedStatus("Savoy",105,occupiedStatus);
+        // Verify that the mock object's methods were called as expected
+        verify(mockDatabaseService, times(1)).findFirstByRoomNumberAndHotel(105,"Savoy");
+       
+        // Assert the result of the test
+        assertEquals(ResponseEntity.ok("Room 105 at the Savoy has had its occupied status updated to true"), result);
+        assertTrue(room.get().getIsOccupied());
+    }
+	
 }
