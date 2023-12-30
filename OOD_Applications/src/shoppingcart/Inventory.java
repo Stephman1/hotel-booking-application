@@ -51,7 +51,6 @@ public class Inventory {
     
     public ArrayList<Product> removeItem(String name, int quantity) {
     	ArrayList<Product> products = new ArrayList<Product>();
-    	System.out.println("|" + name + "|");
     	if (checkAvailability(name, quantity)) {
     		ArrayList<Product> productHolder = items.get(name);
     		for (int i=0; i < quantity; i++) {
@@ -66,14 +65,11 @@ public class Inventory {
     }
     
     public boolean checkAvailability(String name, int quantity) {
-    	System.out.println("|" + name + "|");
     	for (Map.Entry<String, ArrayList<Product>> entry: items.entrySet()) {
     		System.out.println(entry.getKey() + " : " + entry.getValue().size() + " : " + entry.getValue());
     	}
-    	//System.out.println(items.get(name));
-    	//if (items.get(name).size() >= quantity) return true;
-    	//else return false;
-    	return true;
+    	if (items.get(name).size() >= quantity) return true;
+    	else return false;
     }
     
 }
