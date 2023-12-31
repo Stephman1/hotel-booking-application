@@ -24,9 +24,12 @@ public class HotelBookingAppTest
 	// Mock database
 	@Test
     public void testGetAllRooms() {
-		HotelRoom room1 = new HotelRoom(101,4,180,"medium","Marriott");
-		HotelRoom room2 = new HotelRoom(103,2,120,"small","Hilton");
-		HotelRoom room3 = new HotelRoom(202,5,530,"large","Savoy");
+		Hotel hotel1 = new Hotel();
+		Hotel hotel2 = new Hotel();
+		Hotel hotel3 = new Hotel();
+		HotelRoom room1 = new HotelRoom(101,4,380.0,"suite",false,hotel1);
+		HotelRoom room2 = new HotelRoom(103,2,120.0,"standard",false,hotel2);
+		HotelRoom room3 = new HotelRoom(202,5,530.0,"penthouse",false,hotel3);
 		
 		List<HotelRoom> rooms = new ArrayList<>();
 		rooms.add(room1);
@@ -52,9 +55,12 @@ public class HotelBookingAppTest
 	
 	@Test
     public void testGetAvailableRoomsByRoomType() {
-		HotelRoom room1 = new HotelRoom(101,4,180,"medium","Marriott");
-		HotelRoom room2 = new HotelRoom(103,2,120,"small","Hilton");
-		HotelRoom room3 = new HotelRoom(202,5,530,"large","Savoy");
+		Hotel hotel1 = new Hotel();
+		Hotel hotel2 = new Hotel();
+		Hotel hotel3 = new Hotel();
+		HotelRoom room1 = new HotelRoom(101,4,380.0,"suite",false,hotel1);
+		HotelRoom room2 = new HotelRoom(103,2,120.0,"standard",false,hotel2);
+		HotelRoom room3 = new HotelRoom(202,5,530.0,"penthouse",false,hotel3);
 		
 		List<HotelRoom> rooms = new ArrayList<>();
 		rooms.add(room1);
@@ -68,14 +74,14 @@ public class HotelBookingAppTest
         HotelRoomRepository mockDatabaseService = mock(HotelRoomRepository.class);
 
         // Define the behaviour of the mock object
-        when(mockDatabaseService.findByRoomTypeAndIsOccupiedFalse("small")).thenReturn(smallRooms);
+        when(mockDatabaseService.findByRoomTypeAndIsOccupiedFalse("standard")).thenReturn(smallRooms);
 
         // Perform the test using the mock object
         HotelController hotelController = new HotelController(mockDatabaseService, true);
-        List<HotelRoom> result = hotelController.getAvailableRoomsByRoomType("small");
+        List<HotelRoom> result = hotelController.getAvailableRoomsByRoomType("standard");
 
         // Verify that the mock object's methods were called as expected
-        verify(mockDatabaseService, times(1)).findByRoomTypeAndIsOccupiedFalse("small");
+        verify(mockDatabaseService, times(1)).findByRoomTypeAndIsOccupiedFalse("standard");
 
         // Assert the result of the test
         assertEquals(smallRooms, result);
@@ -83,32 +89,33 @@ public class HotelBookingAppTest
 	
 	@Test
     public void testUpdateRoomOccupiedStatus() {
-		Optional<HotelRoom> room = Optional.ofNullable(new HotelRoom(105,2,130,"small","Savoy"));
+		Optional<HotelRoom> room = Optional.ofNullable(new HotelRoom(105,2,130.0,"standard",false,new Hotel()));
 		assertFalse(room.get().getIsOccupied());
 		
         // Create a mock object for the DatabaseService interface
         HotelRoomRepository mockDatabaseService = mock(HotelRoomRepository.class);
 
         // Define the behaviour of the mock object
-        when(mockDatabaseService.findFirstByRoomNumberAndHotel(105,"Savoy")).thenReturn(room);
+        when(mockDatabaseService.findByHotelHotelNameAndRoomNumber("Luxury Palace",105)).thenReturn(room);
 
         // Perform the test using the mock object
         HotelController hotelController = new HotelController(mockDatabaseService, true);
-        Map<String,Boolean> occupiedStatus = new HashMap<>();
+        Map<String,Object> occupiedStatus = new HashMap<>();
         occupiedStatus.put("occupied", true);
-        ResponseEntity<String> result = hotelController.updateRoomOccupiedStatus("Savoy",105,occupiedStatus);
+        occupiedStatus.put("hotel", "Luxury Palace");
+        ResponseEntity<String> result = hotelController.updateRoomOccupiedStatus(105,occupiedStatus);
         // Verify that the mock object's methods were called as expected
-        verify(mockDatabaseService, times(1)).findFirstByRoomNumberAndHotel(105,"Savoy");
+        verify(mockDatabaseService, times(1)).findByHotelHotelNameAndRoomNumber("Luxury Palace",105);
        
         // Assert the result of the test
-        assertEquals(ResponseEntity.ok("Room 105 at the Savoy has had its occupied status updated to true"), result);
+        assertEquals(ResponseEntity.ok("Room 105 at the Luxury Palace has had its occupied status updated to true"), result);
         assertTrue(room.get().getIsOccupied());
     }
 	
 	@Test
 	public void testUpdatePriceForRoomType() {
-		HotelRoom room1 = new HotelRoom(101,2,110,"small","Marriott");
-		HotelRoom room2 = new HotelRoom(202,2,110,"small","Marriott");
+		HotelRoom room1 = new HotelRoom(101,2,110.0,"standard",false,new Hotel());
+		HotelRoom room2 = new HotelRoom(202,2,110.0,"standard",false,new Hotel());
 		
 		List<HotelRoom> marriottRooms = new ArrayList<>();
 		marriottRooms.add(room1);
@@ -117,21 +124,22 @@ public class HotelBookingAppTest
 		// Create a mock object for the DatabaseService interface
         HotelRoomRepository mockDatabaseService = mock(HotelRoomRepository.class);
         // Define the behaviour of the mock object
-        when(mockDatabaseService.findByRoomTypeAndHotel("small","Marriott")).thenReturn(marriottRooms);
+        when(mockDatabaseService.findByHotelHotelNameAndRoomType("Seaside Resort","standard")).thenReturn(marriottRooms);
         
         // Perform the test using the mock object
         HotelController hotelController = new HotelController(mockDatabaseService, true);
-        Map<String,Integer> price = new HashMap<>();
-        Integer newPrice = 130;
-        price.put("price", newPrice);
-        ResponseEntity<String> result = hotelController.updatePriceForRoomType("Marriott","small",price);
+        Map<String,Object> rate = new HashMap<>();
+        Double newRate = 130.0;
+        rate.put("rate", newRate);
+        rate.put("hotel", "Seaside Resort");
+        ResponseEntity<String> result = hotelController.updateRateForRoomType("standard",rate);
         // Verify that the mock object's methods were called as expected
-        verify(mockDatabaseService, times(1)).findByRoomTypeAndHotel("small","Marriott");
+        verify(mockDatabaseService, times(1)).findByHotelHotelNameAndRoomType("Seaside Resort","standard");
         
         // Assert the result of the test
-        assertEquals(ResponseEntity.ok("Room pricing updated for small rooms at the Marriott to £" + newPrice + " per night"), result);
-        assertEquals(room1.getPrice(),newPrice);
-        assertEquals(room2.getPrice(),newPrice);
+        assertEquals(ResponseEntity.ok("Room pricing updated for standard rooms at the Seaside Resort to £" + newRate + " per night"), result);
+        assertEquals(room1.getRoomRate(),newRate);
+        assertEquals(room2.getRoomRate(),newRate);
 	}
 	
 }

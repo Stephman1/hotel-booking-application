@@ -1,14 +1,15 @@
 package group_id.hotelbooking;
 
-import java.util.Objects;
-
 import javax.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
-@Table(name = "hotel_rooms")
+@Table(name = "rooms")
 public class HotelRoom {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
     private Integer id;
 
     @Column(name = "room_number")
@@ -16,70 +17,89 @@ public class HotelRoom {
 
     @Column(name = "number_of_people")
     private Integer numberOfPeople;
-    
-    @Column(name = "price")
-    private Integer price;
-    
+
+    @Column(name = "room_rate")
+    private Double roomRate;  // Assuming the room rate can be a decimal value
+
     @Column(name = "room_type")
     private String roomType;
 
-    @Column(name = "is_occupied")
+    @Column(name = "room_is_occupied")
     private Boolean isOccupied;
-    
-    @Column(name = "hotel")
-    private String hotel;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
     
     public HotelRoom() {
     	// Default constructor
     }
-    
-    public HotelRoom(Integer roomNumber, Integer numOfPeople, Integer price, String roomType, String hotel) {
-    	this.roomNumber = roomNumber;
-    	this.numberOfPeople = numOfPeople;
-    	this.price = price;
-    	this.roomType = roomType;
-    	this.isOccupied = false;
-    	this.hotel = hotel;
-    }
-    
-    // Methods
-    @Override
-    public String toString() {
-        return "HotelRoom{" +
-                "id=" + id +
-                ", roomNumber=" + roomNumber +
-                ", numberOfPeople=" + numberOfPeople +
-                ", price=" + price +
-                ", roomType='" + roomType + '\'' +
-                ", isOccupied=" + isOccupied +
-                ", hotel='" + hotel + '\'' +
-                '}';
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        HotelRoom otherRoom = (HotelRoom) obj;
-        return Objects.equals(roomNumber, otherRoom.roomNumber) &&
-               Objects.equals(numberOfPeople, otherRoom.numberOfPeople) &&
-               Objects.equals(price, otherRoom.price) &&
-               Objects.equals(roomType, otherRoom.roomType) &&
-               Objects.equals(hotel, otherRoom.hotel);
-    }
 
-	/**
-	 * @return the price
-	 */
-	public Integer getPrice() {
-		return price;
+	public HotelRoom(Integer roomNumber, Integer numberOfPeople, Double roomRate, String roomType, Boolean isOccupied,
+			Hotel hotel) {
+		super();
+		this.roomNumber = roomNumber;
+		this.numberOfPeople = numberOfPeople;
+		this.roomRate = roomRate;
+		this.roomType = roomType;
+		this.isOccupied = isOccupied;
+		this.hotel = hotel;
 	}
 
 	/**
-	 * @param price the price to set
+	 * @return the roomNumber
 	 */
-	public void setPrice(Integer price) {
-		this.price = price;
+	public Integer getRoomNumber() {
+		return roomNumber;
+	}
+
+	/**
+	 * @param roomNumber the roomNumber to set
+	 */
+	public void setRoomNumber(Integer roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+
+	/**
+	 * @return the numberOfPeople
+	 */
+	public Integer getNumberOfPeople() {
+		return numberOfPeople;
+	}
+
+	/**
+	 * @param numberOfPeople the numberOfPeople to set
+	 */
+	public void setNumberOfPeople(Integer numberOfPeople) {
+		this.numberOfPeople = numberOfPeople;
+	}
+
+	/**
+	 * @return the roomRate
+	 */
+	public Double getRoomRate() {
+		return roomRate;
+	}
+
+	/**
+	 * @param roomRate the roomRate to set
+	 */
+	public void setRoomRate(Double roomRate) {
+		this.roomRate = roomRate;
+	}
+
+	/**
+	 * @return the roomType
+	 */
+	public String getRoomType() {
+		return roomType;
+	}
+
+	/**
+	 * @param roomType the roomType to set
+	 */
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
 	}
 
 	/**
@@ -97,31 +117,18 @@ public class HotelRoom {
 	}
 
 	/**
-	 * @return the roomNumber
-	 */
-	public Integer getRoomNumber() {
-		return roomNumber;
-	}
-
-	/**
-	 * @return the numberOfPeople
-	 */
-	public Integer getNumberOfPeople() {
-		return numberOfPeople;
-	}
-
-	/**
-	 * @return the roomType
-	 */
-	public String getRoomType() {
-		return roomType;
-	}
-
-	/**
 	 * @return the hotel
 	 */
-	public String getHotel() {
+	public Hotel getHotel() {
 		return hotel;
 	}
+
+	/**
+	 * @param hotel the hotel to set
+	 */
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
+	}
+	
 
 }

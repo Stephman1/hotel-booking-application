@@ -55,7 +55,7 @@ public class HotelController {
     
     /**
      Example curl:
-     curl -X GET "http://localhost:8080/hotel_rooms/available/small"
+     curl -X GET "http://localhost:8080/hotel_rooms/available/standard"
      */
     @GetMapping("/available/{roomType}")
     public List<HotelRoom> getAvailableRoomsByRoomType(@PathVariable String roomType) {
@@ -65,17 +65,17 @@ public class HotelController {
 
     /**
      Example curl:
-     curl -X PUT -H "Content-Type: application/json" -d '{"occupied": true}' "http://localhost:8080/hotel_rooms/occupied/Hilton/104" 
+     curl -X PUT -H "Content-Type: application/json" -d '{"hotel": "InterContinental", "occupied": true}' "http://localhost:8080/hotel_rooms/occupied/203" 
      */
-    @PutMapping("occupied/{hotel}/{roomNumber}")
+    @PutMapping("/occupied/{roomNumber}")
     public ResponseEntity<String> updateRoomOccupiedStatus(
-    		@PathVariable String hotel,
     		@PathVariable Integer roomNumber, 
-    		@RequestBody Map<String, Boolean> occupied) {
-        Optional<HotelRoom> potentialRoom = hotelRoomRepository.findFirstByRoomNumberAndHotel(roomNumber, hotel);
+    		@RequestBody Map<String, Object> occupied) {
+    	String hotel = (String) occupied.get("hotel");
+    	Boolean isOccupied = (Boolean) occupied.get("occupied");
+        Optional<HotelRoom> potentialRoom = hotelRoomRepository.findByHotelHotelNameAndRoomNumber(hotel,roomNumber);
         if (potentialRoom.isPresent()) {
             HotelRoom room = potentialRoom.get();
-            Boolean isOccupied = occupied.get("occupied");
             room.setIsOccupied(isOccupied);
             hotelRoomRepository.save(room); // Save the updated room to the database
             return ResponseEntity.ok("Room " + roomNumber + " at the " + hotel + " has had its occupied status updated to " + isOccupied);
@@ -86,22 +86,20 @@ public class HotelController {
 
     /**
     Example curl:
-    curl -X PUT -H "Content-Type: application/json" -d '{"price": 120}'  "http://localhost:8080/hotel_rooms/price/Hilton/small"
+    curl -X PUT -H "Content-Type: application/json" -d '{"hotel": "Waldorf Astoria", "rate": 120.00}'  "http://localhost:8080/hotel_rooms/rate/standard"
     */
-    @PutMapping("price/{hotel}/{roomType}")
-    public ResponseEntity<String> updatePriceForRoomType(
-    		@PathVariable String hotel,
+    @PutMapping("/rate/{roomType}")
+    public ResponseEntity<String> updateRateForRoomType(
     		@PathVariable String roomType,
-    		@RequestBody Map<String, Integer> price) {
-
-        List<HotelRoom> roomsToUpdate = hotelRoomRepository.findByRoomTypeAndHotel(roomType, hotel);
-        Integer newPrice = price.get("price");
-        
+    		@RequestBody Map<String, Object> roomRate) {
+    	String hotel = (String) roomRate.get("hotel");
+    	Double newRate = (Double) roomRate.get("rate");
+        List<HotelRoom> roomsToUpdate = hotelRoomRepository.findByHotelHotelNameAndRoomType(hotel,roomType);
         for (HotelRoom room : roomsToUpdate) {
-            room.setPrice(newPrice);
+            room.setRoomRate(newRate);
             hotelRoomRepository.save(room);
         }
-        return ResponseEntity.ok("Room pricing updated for " + roomType + " rooms at the " + hotel + " to £" + newPrice + " per night");
+        return ResponseEntity.ok("Room pricing updated for " + roomType + " rooms at the " + hotel + " to £" + newRate + " per night");
     }
 
 }
