@@ -1,54 +1,42 @@
 package group_id.hotelbooking;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
-public class HotelGUI implements ActionListener {
-	
-	private int count = 0;
-	private JFrame frame;
-	private JPanel panel;
-	private JLabel viewAllLabel;
-	
-	public HotelGUI() {
-		frame = new JFrame();
-		
-		JButton viewAllButton = new JButton("Click to view all hotel rooms");
-		viewAllLabel = new JLabel("Number of clicks: 0");
-		
-		viewAllButton.addActionListener(this);
-		
-		
-		panel = new JPanel();
-		panel.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
-		panel.setLayout(new GridLayout(0, 1));
-		panel.add(viewAllButton);
-		panel.add(viewAllLabel);
-		
-		frame.add(panel, BorderLayout.CENTER);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Hotel Booking Application");
-		frame.pack();
-		frame.setVisible(true);
-		
-	}
+public class HotelGUI extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
-		new HotelGUI();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					HotelGUI frame = new HotelGUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		count += 1;
-		viewAllLabel.setText("Number of clicks: " + count);
+	/**
+	 * Create the frame.
+	 */
+	public HotelGUI() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
 	}
 
 }
