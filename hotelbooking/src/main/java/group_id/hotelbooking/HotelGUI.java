@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -14,8 +15,10 @@ public class HotelGUI extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField apiEndpointTextField3;
-    private JTextField apiEndpointTextField4;
-    private JTextField apiEndpointTextField5;
+    private JTextField apiEndpointTextField4a;
+    private JTextField apiEndpointTextField4b;
+    private JTextField apiEndpointTextField5a;
+    private JTextField apiEndpointTextField5b;
     private JTextArea resultTextArea;
 
     public static void main(String[] args) {
@@ -38,44 +41,58 @@ public class HotelGUI extends JFrame {
         contentPane.setLayout(null);
 
         // Get all rooms
-        JButton btnCallApi1 = createButton("Get all rooms", 420, 10);
+        JButton btnCallApi1 = createButton("Get all rooms", 680, 10);
         btnCallApi1.addActionListener(e -> resultTextArea.setText(makeApiCall("")));
 
         // Get all available rooms
-        JButton btnCallApi2 = createButton("Get all available rooms", 420, 50);
+        JButton btnCallApi2 = createButton("Get all available rooms", 680, 50);
         btnCallApi2.addActionListener(e -> resultTextArea.setText(makeApiCall("")));
 
         // Get all available rooms by room type
-        apiEndpointTextField3 = createTextField(10, 90, 400);
-        JButton btnCallApi3 = createButton("Get available rooms by type", 420, 90);
+        JLabel labelApi3 = createLabel("Room type: ", 10, 90);
+        apiEndpointTextField3 = createTextField(110, 90, 200);
+        JButton btnCallApi3 = createButton("Get available rooms by type", 680, 90);
         btnCallApi3.addActionListener(e -> resultTextArea.setText(makeApiCall(apiEndpointTextField3.getText())));
 
         // Update occupied status of room in a hotel
-        apiEndpointTextField4 = createTextField(10, 130, 400);
-        JButton btnCallApi4 = createButton("Update room occupied status", 420, 130);
-        btnCallApi4.addActionListener(e -> resultTextArea.setText(makeApiCall(apiEndpointTextField4.getText())));
+        JLabel labelApi4a = createLabel("Hotel: ", 10, 130);
+        apiEndpointTextField4a = createTextField(110, 130, 200);
+        JLabel labelApi4b = createLabel("Room num: ", 340, 130);
+        apiEndpointTextField4b = createTextField(440, 130, 200);
+        JButton btnCallApi4 = createButton("Update occupied status by hotel and room", 680, 130);
+        btnCallApi4.addActionListener(e -> resultTextArea.setText(makeApiCall(apiEndpointTextField4a.getText())));
 
         // Update price of rooms by type and hotel
-        apiEndpointTextField5 = createTextField(10, 170, 400);
-        JButton btnCallApi5 = createButton("Update price of room type", 420, 170);
-        btnCallApi5.addActionListener(e -> resultTextArea.setText(makeApiCall(apiEndpointTextField5.getText())));
+        JLabel labelApi5a = createLabel("Hotel: ", 10, 170);
+        apiEndpointTextField5a = createTextField(110, 170, 195);
+        JLabel labelApi5b = createLabel("Room num: ", 340, 170);
+        apiEndpointTextField5b = createTextField(440, 170, 200);
+        JButton btnCallApi5 = createButton("Update price by hotel and room type", 680, 170);
+        btnCallApi5.addActionListener(e -> resultTextArea.setText(makeApiCall(apiEndpointTextField5a.getText())));
 
-        resultTextArea = createTextArea(10, 210, 760, 240);
+        resultTextArea = createTextArea(10, 210, 1040, 600);
 
         contentPane.add(btnCallApi1);
         contentPane.add(btnCallApi2);
+        contentPane.add(labelApi3);
         contentPane.add(apiEndpointTextField3);
         contentPane.add(btnCallApi3);
-        contentPane.add(apiEndpointTextField4);
+        contentPane.add(labelApi4a);
+        contentPane.add(apiEndpointTextField4a);
+        contentPane.add(labelApi4b);
+        contentPane.add(apiEndpointTextField4b);
         contentPane.add(btnCallApi4);
-        contentPane.add(apiEndpointTextField5);
+        contentPane.add(labelApi5a);
+        contentPane.add(apiEndpointTextField5a);
+        contentPane.add(labelApi5b);
+        contentPane.add(apiEndpointTextField5b);
         contentPane.add(btnCallApi5);
         contentPane.add(resultTextArea);
     }
 
     private JButton createButton(String label, int x, int y) {
         JButton button = new JButton(label);
-        button.setBounds(x, y, 250, 25);
+        button.setBounds(x, y, 300, 25);
         return button;
     }
 
@@ -83,6 +100,12 @@ public class HotelGUI extends JFrame {
         JTextField textField = new JTextField();
         textField.setBounds(x, y, width, 25);
         return textField;
+    }
+    
+    private JLabel createLabel(String labelText, int x, int y) {
+        JLabel label = new JLabel(labelText);
+        label.setBounds(x, y, 80, 20);
+        return label;
     }
 
     private JTextArea createTextArea(int x, int y, int width, int height) {
@@ -96,4 +119,5 @@ public class HotelGUI extends JFrame {
         // For demonstration purposes, returning a dummy response
         return "API response for endpoint: " + apiEndpoint;
     }
+    
 }
