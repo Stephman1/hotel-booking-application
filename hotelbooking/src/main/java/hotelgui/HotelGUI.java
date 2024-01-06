@@ -1,7 +1,5 @@
 package hotelgui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 public class HotelGUI extends JFrame {
 
+	// Fields
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField apiEndpointTextField3;
@@ -27,24 +26,15 @@ public class HotelGUI extends JFrame {
     private JTextArea resultTextArea = new JTextArea();
     private String base_url;
     private HotelApiCaller apiCaller;
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                HotelGUI frame = new HotelGUI("http://localhost:8080/hotel_rooms");
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
+    
+    // Constructor
     public HotelGUI(String base_url) {
     	this.base_url = base_url;
     	this.apiCaller =  new HotelApiCaller(this.base_url);
     	
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 500);
+        setBounds(100, 100, 1080, 800);
+        setTitle("Hotel Booking App");
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -88,7 +78,7 @@ public class HotelGUI extends JFrame {
         		apiEndpointTextField5b.getText()
         		)));
         
-     // Update price of rooms by type and hotel
+        // Update price of rooms by type and hotel
         JLabel labelApi6a = createLabel("Hotel: ", 10, 210);
         apiEndpointTextField6a = createTextField(110, 210, 200);
         JLabel labelApi6b = createLabel("Room type: ", 340, 210);
@@ -130,7 +120,8 @@ public class HotelGUI extends JFrame {
         contentPane.add(btnCallApi6);
         contentPane.add(scrollPane);
     }
-
+    
+    // Methods
     private JButton createButton(String label, int x, int y) {
         JButton button = new JButton(label);
         button.setBounds(x, y, 350, 25);

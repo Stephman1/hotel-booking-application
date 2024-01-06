@@ -18,7 +18,6 @@ public class HotelApiCaller {
 	// Fields
 	private String base_url;
 	
-	
 	// Constructor
 	public HotelApiCaller(String url) {
 		this.base_url = url;
