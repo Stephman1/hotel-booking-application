@@ -11,10 +11,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 public class HotelGUI extends JFrame {
 
@@ -56,17 +52,19 @@ public class HotelGUI extends JFrame {
 
         // Get all rooms
         JButton btnCallApi1 = createButton("Get all rooms", 680, 10);
-        btnCallApi1.addActionListener(e -> this.resultTextArea.setText(getAllRooms()));
+        btnCallApi1.addActionListener(e -> this.resultTextArea.setText(this.apiCaller.getAllRoomsCaller()));
 
         // Get all available rooms
         JButton btnCallApi2 = createButton("Get all available rooms", 680, 50);
-        btnCallApi2.addActionListener(e -> this.resultTextArea.setText(getAllAvailableRooms()));
+        btnCallApi2.addActionListener(e -> this.resultTextArea.setText(this.apiCaller.getAllAvailableRoomsCaller()));
 
         // Get all available rooms by room type
         JLabel labelApi3 = createLabel("Room type: ", 10, 90);
         apiEndpointTextField3 = createTextField(110, 90, 200);
         JButton btnCallApi3 = createButton("Get available rooms by type", 680, 90);
-        btnCallApi3.addActionListener(e -> this.resultTextArea.setText(getAllAvailableRoomsByType(apiEndpointTextField3.getText())));
+        btnCallApi3.addActionListener(e -> this.resultTextArea.setText(this.apiCaller.getAllAvailableRoomsByTypeCaller(
+        		apiEndpointTextField3.getText()
+        		)));
 
         // Update occupied status of room in a hotel
         JLabel labelApi4a = createLabel("Hotel: ", 10, 130);
@@ -74,7 +72,7 @@ public class HotelGUI extends JFrame {
         JLabel labelApi4b = createLabel("Room num: ", 340, 130);
         apiEndpointTextField4b = createTextField(440, 130, 200);
         JButton btnCallApi4 = createButton("Update occupied status by hotel and room", 680, 130);
-        btnCallApi4.addActionListener(e -> this.resultTextArea.setText(updateOccupiedStatusByHotelAndRoomNumber(
+        btnCallApi4.addActionListener(e -> this.resultTextArea.setText(this.apiCaller.updateOccupiedStatusByHotelAndRoomNumberCaller(
         		apiEndpointTextField4a.getText(),
         		apiEndpointTextField4b.getText()
         		)));
@@ -85,7 +83,7 @@ public class HotelGUI extends JFrame {
         JLabel labelApi5b = createLabel("Room num: ", 340, 170);
         apiEndpointTextField5b = createTextField(440, 170, 200);
         JButton btnCallApi5 = createButton("Update unoccupied status by hotel and room", 680, 170);
-        btnCallApi5.addActionListener(e -> this.resultTextArea.setText(updateUnoccupiedStatusByHotelAndRoomNumber(
+        btnCallApi5.addActionListener(e -> this.resultTextArea.setText(this.apiCaller.updateUnoccupiedStatusByHotelAndRoomNumberCaller(
         		apiEndpointTextField5a.getText(),
         		apiEndpointTextField5b.getText()
         		)));
@@ -98,7 +96,7 @@ public class HotelGUI extends JFrame {
         JLabel labelApi6c = createLabel("Rate: ", 10, 250);
         apiEndpointTextField6c = createTextField(110, 250, 200);
         JButton btnCallApi6 = createButton("Update rate by hotel and room type", 680, 210);
-        btnCallApi6.addActionListener(e -> this.resultTextArea.setText(updateRateByHotelAndRoomType(
+        btnCallApi6.addActionListener(e -> this.resultTextArea.setText(this.apiCaller.updateRateByHotelAndRoomTypeCaller(
         		apiEndpointTextField6a.getText(),
         		apiEndpointTextField6b.getText(),
         		apiEndpointTextField6c.getText()
@@ -155,43 +153,6 @@ public class HotelGUI extends JFrame {
     	JScrollPane scrollPane = new JScrollPane(textArea);
     	scrollPane.setBounds(x, y, width, height);
     	return scrollPane;
-    }
-    
-    private String getAllRooms() {
-    	String response = apiCaller.getAllRooms();
-    	return prettyPrintJson(response);
-    }
-    
-    private String getAllAvailableRooms() {
-    	String response = apiCaller.getAllAvailableRooms("/available");
-    	return prettyPrintJson(response);
-    }
-    
-    private String getAllAvailableRoomsByType(String type) {
-    	String response = apiCaller.getAllAvailableRoomsByType("/available", type);
-    	return prettyPrintJson(response);
-    }
-    
-    private String updateOccupiedStatusByHotelAndRoomNumber(String hotel, String roomNumber) {
-    	String response = apiCaller.updateOccupiedStatusByHotelAndRoomNumber("/occupied", hotel, roomNumber, true);
-    	return response;
-    }
-    
-    private String updateUnoccupiedStatusByHotelAndRoomNumber(String hotel, String roomNumber) {
-    	String response = apiCaller.updateOccupiedStatusByHotelAndRoomNumber("/occupied", hotel, roomNumber, false);
-    	return response;
-    }
-    
-    private String updateRateByHotelAndRoomType(String hotel, String roomType, String rate) {
-    	String response = apiCaller.updateRateByHotelAndRoomType("/rate", hotel, roomType, rate);
-    	return response;
-    }
-    
-    public String prettyPrintJson(String uglyJsonString) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonElement jsonElement = JsonParser.parseString(uglyJsonString);
-        String prettyJsonString = gson.toJson(jsonElement);
-        return prettyJsonString;
     }
     
 }

@@ -6,24 +6,68 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import org.springframework.http.ResponseEntity;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import java.net.http.HttpHeaders;
 
 public class HotelApiCaller {
 	
-	// "http://localhost:8080/hotel_rooms"
+	// Fields
 	private String base_url;
 	
+	
+	// Constructor
 	public HotelApiCaller(String url) {
 		this.base_url = url;
 	}
+	
+	// Public methods
+    public String getAllRoomsCaller() {
+    	String response = getAllRooms();
+    	return prettyPrintJson(response);
+    }
     
-	public String getAllRooms() {
+    public String getAllAvailableRoomsCaller() {
+    	String response = getAllAvailableRooms("/available");
+    	return prettyPrintJson(response);
+    }
+    
+    public String getAllAvailableRoomsByTypeCaller(String type) {
+    	String response = getAllAvailableRoomsByType("/available", type);
+    	return prettyPrintJson(response);
+    }
+    
+    public String updateOccupiedStatusByHotelAndRoomNumberCaller(String hotel, String roomNumber) {
+    	String response = updateOccupiedStatusByHotelAndRoomNumber("/occupied", hotel, roomNumber, true);
+    	return response;
+    }
+    
+    public String updateUnoccupiedStatusByHotelAndRoomNumberCaller(String hotel, String roomNumber) {
+    	String response = updateOccupiedStatusByHotelAndRoomNumber("/occupied", hotel, roomNumber, false);
+    	return response;
+    }
+    
+    public String updateRateByHotelAndRoomTypeCaller(String hotel, String roomType, String rate) {
+    	String response = updateRateByHotelAndRoomType("/rate", hotel, roomType, rate);
+    	return response;
+    }
+    
+    // Private methods
+    private String prettyPrintJson(String uglyJsonString) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement jsonElement = JsonParser.parseString(uglyJsonString);
+        String prettyJsonString = gson.toJson(jsonElement);
+        return prettyJsonString;
+    }
+    
+	private String getAllRooms() {
 		return getAllAvailableRooms("");
     }
 	
-	public String getAllAvailableRooms(String mapping) {
+	private String getAllAvailableRooms(String mapping) {
 
         String apiUrl = base_url + mapping;
 
@@ -59,7 +103,7 @@ public class HotelApiCaller {
         }
 	}
 	
-	public String getAllAvailableRoomsByType(String mapping, String type) {
+	private String getAllAvailableRoomsByType(String mapping, String type) {
 		String apiUrl = base_url + mapping + "/" + type.toLowerCase().strip();
 
         // Create an instance of HttpClient
@@ -94,7 +138,7 @@ public class HotelApiCaller {
         }
 	}
 	
-	public String updateOccupiedStatusByHotelAndRoomNumber(String mapping, String hotel, String roomNumber, boolean occupiedStatus) {
+	private String updateOccupiedStatusByHotelAndRoomNumber(String mapping, String hotel, String roomNumber, boolean occupiedStatus) {
 		String apiUrl = base_url + mapping + "/" + roomNumber.strip();
 
         // Create JSON payload with the updated field name
@@ -131,7 +175,7 @@ public class HotelApiCaller {
         }
 	}
 	
-	public String updateRateByHotelAndRoomType(String mapping, String hotel, String roomType, String rate) {
+	private String updateRateByHotelAndRoomType(String mapping, String hotel, String roomType, String rate) {
 		String apiUrl = base_url + mapping + "/" + roomType.toLowerCase().strip();
 		
 		if (!rate.contains(".")) {
