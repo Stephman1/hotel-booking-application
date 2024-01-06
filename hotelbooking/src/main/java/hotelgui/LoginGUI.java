@@ -1,6 +1,7 @@
 package hotelgui;
 
-import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,17 +17,8 @@ public class LoginGUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField emailField;
     private JTextField passwordField;
-    
-    public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				LoginGUI frame = new LoginGUI();
-	            frame.setVisible(true);
-	        } catch (Exception e) {
-	        	e.printStackTrace();
-	        }
-		});
-    }
+    private String email;
+    private List<LoginListener> loginListeners = new ArrayList<>();
     
     // Constructor
     public LoginGUI() {
@@ -43,6 +35,7 @@ public class LoginGUI extends JFrame {
         JLabel passwordLabel = createLabel("Password: ", 10, 50);
         passwordField = createTextField(100, 50, 250);
         JButton loginButton = createButton("Login", 10, 90);
+        loginButton.addActionListener(e -> this.setEmail(emailField.getText().strip()));
         
         contentPane.add(emailLabel);
         contentPane.add(emailField);
@@ -69,4 +62,31 @@ public class LoginGUI extends JFrame {
         label.setBounds(x, y, 80, 20);
         return label;
     }
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+		// Notify listeners when the email is set
+		notifyLoginListeners();
+	}
+    
+	public void addLoginListener(LoginListener listener) {
+	    loginListeners.add(listener);
+	}
+
+	private void notifyLoginListeners() {
+	    for (LoginListener listener : loginListeners) {
+	        listener.onLogin(email); // Notify each listener about the email
+	    }
+	}
+    
 }
