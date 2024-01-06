@@ -2,6 +2,7 @@ package group_id.hotelbooking;
 
 import static org.mockito.Mockito.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -137,7 +138,9 @@ public class HotelBookingAppTest
         verify(mockDatabaseService, times(1)).findByHotelHotelNameAndRoomType("Seaside Resort","standard");
         
         // Assert the result of the test
-        assertEquals(ResponseEntity.ok("Room pricing updated for standard rooms at the Seaside Resort to £" + newRate + " per night"), result);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String formattedNewRate = decimalFormat.format(newRate);
+        assertEquals(ResponseEntity.ok("Room rates updated for standard rooms at the Seaside Resort to £" + formattedNewRate + " per night"), result);
         assertEquals(room1.getRoomRate(),newRate);
         assertEquals(room2.getRoomRate(),newRate);
 	}

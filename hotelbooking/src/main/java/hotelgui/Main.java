@@ -12,7 +12,6 @@ public class Main {
 				loginFrame.addLoginListener(email -> {
 				    HotelGUI appFrame = new HotelGUI("http://localhost:8080/hotel_rooms");
 				    appFrame.setVisible(true);
-				    System.out.println(email);
 				});
 				loginFrame.setVisible(true);
 				
