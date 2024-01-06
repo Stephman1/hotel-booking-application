@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +100,9 @@ public class HotelController {
             room.setRoomRate(newRate);
             hotelRoomRepository.save(room);
         }
-        return ResponseEntity.ok("Room pricing updated for " + roomType + " rooms at the " + hotel + " to £" + newRate + " per night");
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String formattedNewRate = decimalFormat.format(newRate);
+        return ResponseEntity.ok("Room rates updated for " + roomType + " rooms at the " + hotel + " to £" + formattedNewRate + " per night");
     }
 
 }
