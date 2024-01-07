@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+
 public class LoginGUI extends JFrame {
 	
 	// Fields
@@ -22,7 +23,7 @@ public class LoginGUI extends JFrame {
     
     // Constructor
     public LoginGUI() {
-    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	setBounds(100, 100, 400, 300);
         setTitle("Login to Hotel Booking App");
         contentPane = new JPanel();
