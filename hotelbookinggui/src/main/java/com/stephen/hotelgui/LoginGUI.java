@@ -1,4 +1,4 @@
-package hotelgui;
+package com.stephen.hotelgui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 
 public class LoginGUI extends JFrame {
 	

@@ -1,4 +1,4 @@
-package hotelgui;
+package com.stephen.hotelgui;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

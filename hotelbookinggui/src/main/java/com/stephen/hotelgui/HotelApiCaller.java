@@ -1,4 +1,4 @@
-package hotelgui;
+package com.stephen.hotelgui;
 
 import java.io.IOException;
 import java.net.URI;
