@@ -12,6 +12,12 @@ public class Main {
 				loginFrame.addLoginListener(email -> {
 				    HotelGUI appFrame = new HotelGUI("http://localhost:8080/hotel_rooms");
 				    appFrame.setVisible(true);
+				    EmailSender.sendEmail(
+				    		EmailSender.loadConfig(), 
+				    		loginFrame.getEmail(), 
+				    		"Recent login to hotel booking app", 
+				    		"Hi,\n\nThis is to inform you that we had a recent login to your account.\n\nThank you,\nthe Hotel Booking app team"
+				    		);
 				});
 				loginFrame.setVisible(true);
 				
